@@ -53,17 +53,20 @@ export default function YearNavBar({ years }: YearNavBarProps) {
   return (
     <nav className="bg-white border-b-2 border-gray-200 sticky top-[73px] z-40">
       <div className="container mx-auto px-4 max-w-7xl">
-        <div className="flex items-center gap-2 overflow-x-auto py-3 scrollbar-hide">
+        <div className="flex items-center gap-2 md:gap-2 overflow-x-auto py-3 scrollbar-hide">
           {years.map(year => (
             <button
               key={year}
               onClick={() => scrollToYear(year)}
               className={`
-                px-5 py-2 font-poppins font-semibold text-sm rounded-lg
+                px-6 py-3 md:px-5 md:py-2
+                font-poppins font-semibold text-base md:text-sm
+                rounded-lg
                 transition-all duration-200 whitespace-nowrap
+                active:scale-95
                 ${activeYear === year
-                  ? 'bg-aba-red text-white border-b-3 border-aba-red-dark'
-                  : 'text-gray-600 hover:bg-gray-100'
+                  ? 'bg-aba-red text-white border-b-3 border-aba-red-dark shadow-md'
+                  : 'text-gray-600 hover:bg-gray-100 active:bg-gray-200'
                 }
               `}
             >

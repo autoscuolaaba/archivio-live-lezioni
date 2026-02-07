@@ -24,25 +24,25 @@ export default function NewVideosNotification({ onReload }: NewVideosNotificatio
   if (!showNotification) return null
 
   return (
-    <div className="fixed top-20 right-4 z-50 animate-slide-in">
-      <div className="bg-aba-red text-white px-6 py-4 rounded-lg shadow-xl flex items-center gap-4 max-w-md">
-        <div className="flex-1">
-          <p className="font-poppins font-semibold mb-1">
+    <div className="fixed top-16 md:top-20 left-4 right-4 md:left-auto md:right-4 z-50 animate-slide-in">
+      <div className="bg-aba-red text-white px-4 md:px-6 py-3 md:py-4 rounded-lg shadow-xl flex items-center gap-3 md:gap-4 max-w-md mx-auto md:mx-0">
+        <div className="flex-1 min-w-0">
+          <p className="font-poppins font-semibold mb-0.5 md:mb-1 text-sm md:text-base">
             🎉 Nuove lezioni disponibili!
           </p>
-          <p className="text-sm opacity-90">
+          <p className="text-xs md:text-sm opacity-90">
             Sono stati aggiunti nuovi video. Clicca per ricaricare.
           </p>
         </div>
         <button
           onClick={handleReload}
-          className="bg-white text-aba-red px-4 py-2 rounded font-medium hover:bg-gray-100 transition-colors"
+          className="bg-white text-aba-red px-3 md:px-4 py-2 rounded text-sm md:text-base font-medium hover:bg-gray-100 active:bg-gray-200 transition-colors whitespace-nowrap"
         >
           Ricarica
         </button>
         <button
           onClick={() => setShowNotification(false)}
-          className="text-white opacity-70 hover:opacity-100 ml-2"
+          className="text-white opacity-70 hover:opacity-100 active:opacity-100 ml-1 md:ml-2 text-lg md:text-base"
           aria-label="Chiudi"
         >
           ✕

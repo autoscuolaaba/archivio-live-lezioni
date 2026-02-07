@@ -40,8 +40,12 @@ export default function PostItCard({ video }: PostItCardProps) {
   const colorIndex = hashString(video.id) % POSTIT_COLORS.length
   const bgColor = POSTIT_COLORS[colorIndex]
 
-  // Assegna rotazione deterministicamente (-3° a +3°)
-  const rotation = (hashString(video.id) % 7) - 3 // Range: -3 a +3
+  // Assegna rotazione deterministicamente
+  // Mobile: -1° a +1° (più leggibile su schermi piccoli)
+  // Desktop: -3° a +3° (effetto post-it più marcato)
+  const rotationHash = hashString(video.id)
+  const rotationMobile = (rotationHash % 3) - 1  // Range: -1 a +1
+  const rotationDesktop = (rotationHash % 7) - 3 // Range: -3 a +3
 
   const handleClick = () => {
     window.open(video.watch_url, '_blank', 'noopener,noreferrer')
@@ -59,9 +63,10 @@ export default function PostItCard({ video }: PostItCardProps) {
         transition-all duration-200
         overflow-hidden
         group
+        active:scale-95
       `}
       style={{
-        transform: `rotate(${rotation}deg)`,
+        transform: `rotate(var(--rotation))`,
         minHeight: '260px',
       }}
     >
@@ -92,16 +97,16 @@ export default function PostItCard({ video }: PostItCardProps) {
           </div>
 
           {/* Contenuto */}
-          <div className="p-4 flex flex-col justify-between" style={{ minHeight: '120px' }}>
+          <div className="p-4 md:p-4 flex flex-col justify-between" style={{ minHeight: '120px' }}>
             {/* Titolo */}
-            <h4 className="font-inter font-medium text-sm leading-tight text-gray-900 mb-2 line-clamp-2">
+            <h4 className="font-inter font-medium text-sm md:text-sm leading-tight text-gray-900 mb-2 line-clamp-2">
               {video.title}
             </h4>
 
             {/* Durata */}
-            <div className="flex items-center gap-1.5 text-gray-600 text-xs mt-auto">
-              <span className="text-base">🕐</span>
-              <span className="font-inter">{video.duration_formatted}</span>
+            <div className="flex items-center gap-1.5 text-gray-600 text-xs md:text-xs mt-auto">
+              <span className="text-lg md:text-base">🕐</span>
+              <span className="font-inter font-medium">{video.duration_formatted}</span>
             </div>
           </div>
         </div>
@@ -116,10 +121,27 @@ export default function PostItCard({ video }: PostItCardProps) {
         }}
       />
 
-      {/* Reset rotazione al hover */}
+      {/* Rotazione responsive e reset al hover */}
       <style jsx>{`
+        article {
+          --rotation: ${rotationMobile}deg;
+        }
+
+        @media (min-width: 768px) {
+          article {
+            --rotation: ${rotationDesktop}deg;
+          }
+        }
+
         article:hover {
           transform: rotate(0deg) !important;
+        }
+
+        /* Touch feedback su mobile */
+        @media (hover: none) {
+          article:active {
+            transform: rotate(0deg) scale(0.98) !important;
+          }
         }
       `}</style>
     </article>

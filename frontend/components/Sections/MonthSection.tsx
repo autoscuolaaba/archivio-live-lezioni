@@ -27,9 +27,9 @@ export default function MonthSection({ monthData }: MonthSectionProps) {
   return (
     <div>
       {/* Header mese */}
-      <h3 className="text-xl md:text-2xl font-poppins font-semibold text-gray-dark mb-4">
+      <h3 className="text-lg md:text-2xl font-poppins font-semibold text-gray-dark mb-3 md:mb-4">
         {monthData.month_name}{' '}
-        <span className="text-gray-500 font-normal text-lg">
+        <span className="text-gray-500 font-normal text-sm md:text-lg">
           ({monthData.total} {monthData.total === 1 ? 'lezione' : 'lezioni'})
         </span>
       </h3>
