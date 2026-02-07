@@ -83,4 +83,4 @@ jobs:
             echo "- Cache non modificata" >> $GITHUB_STEP_SUMMARY
           fi
           echo "" >> $GITHUB_STEP_SUMMARY
-          echo "🕐 Eseguito il: $(date -u +'%Y-%m-%d %H:%M:%S UTC')\" >> $GITHUB_STEP_SUMMARY
+          echo "🕐 Eseguito il: $(date -u +'%Y-%m-%d %H:%M:%S UTC')" >> $GITHUB_STEP_SUMMARY
