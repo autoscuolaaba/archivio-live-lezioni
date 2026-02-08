@@ -113,11 +113,12 @@ def get_all_playlist_items(youtube, playlist_id):
             logger.info(f"Pagina {page_num}: {len(items)} video")
 
             for item in items:
+                video_id = item['snippet']['resourceId']['videoId']
                 video_data = {
-                    'id': item['snippet']['resourceId']['videoId'],
+                    'id': video_id,
                     'title': item['snippet']['title'],
                     'published_at': item['snippet']['publishedAt'],
-                    'thumbnail_url': item['snippet']['thumbnails']['medium']['url']
+                    'thumbnail_url': f"https://i.ytimg.com/vi/{video_id}/mqdefault.jpg"
                 }
                 all_videos.append(video_data)
 
