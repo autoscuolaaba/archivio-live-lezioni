@@ -14,3 +14,76 @@ permissions:
 jobs:
   refresh-cache:
     runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          pip install --upgrade pip
+          pip install google-auth-oauthlib google-auth-httplib2 google-api-python-client isodate python-dotenv requests
+
+      - name: Create credentials.json from secret
+        run: |
+          echo '${{ secrets.GOOGLE_CREDENTIALS }}' > credentials.json
+
+      - name: Create token.json from secret
+        run: |
+          echo '${{ secrets.GOOGLE_TOKEN }}' > token.json
+
+      - name: Run fetch all videos script
+        env:
+          YOUTUBE_CHANNEL_ID: UC18Pm8LKXwtK2uUSoif5RVw
+        run: |
+          python3 execution/fetch_all_videos.py
+
+      - name: Check for changes
+        id: check_changes
+        run: |
+          if git diff --quiet data/videos_cache.json frontend/public/data/videos_cache.json frontend/public/thumbnails/; then
+            echo "changed=false" >> $GITHUB_OUTPUT
+            echo "ℹ️  Nessun nuovo video trovato"
+          else
+            echo "changed=true" >> $GITHUB_OUTPUT
+            VIDEOS_COUNT=$(jq '.total_videos' data/videos_cache.json)
+            echo "count=$VIDEOS_COUNT" >> $GITHUB_OUTPUT
+            echo "✅ Nuovi video trovati! Totale: $VIDEOS_COUNT"
+          fi
+
+      - name: Commit and push if changed
+        if: steps.check_changes.outputs.changed == 'true'
+        run: |
+          git config user.name "GitHub Actions Bot"
+          git config user.email "actions@github.com"
+          git add data/videos_cache.json frontend/public/data/videos_cache.json frontend/public/thumbnails/
+          git commit -m "🔄 Auto-refresh: aggiornamento cache video (${{ steps.check_changes.outputs.count }} video)
+
+          - Eseguito da GitHub Actions
+          - Timestamp: $(date -u +'%Y-%m-%d %H:%M:%S UTC')
+
+          Co-Authored-By: GitHub Actions <actions@github.com>"
+          git push
+
+      - name: Summary
+        run: |
+          echo "### 📊 Refresh Cache Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          if [ "${{ steps.check_changes.outputs.changed }}" == "true" ]; then
+            echo "✅ **Nuovi video aggiunti!**" >> $GITHUB_STEP_SUMMARY
+            echo "- Totale video in cache: **${{ steps.check_changes.outputs.count }}**" >> $GITHUB_STEP_SUMMARY
+            echo "- Commit pushato su GitHub" >> $GITHUB_STEP_SUMMARY
+            echo "- Vercel rideploya automaticamente il frontend" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "ℹ️  Nessun nuovo video trovato" >> $GITHUB_STEP_SUMMARY
+            echo "- Cache non modificata" >> $GITHUB_STEP_SUMMARY
+          fi
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "🕐 Eseguito il: $(date -u +'%Y-%m-%d %H:%M:%S UTC')" >> $GITHUB_STEP_SUMMARY
