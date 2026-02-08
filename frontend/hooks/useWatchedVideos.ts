@@ -37,7 +37,7 @@ export function useWatchedVideos(): UseWatchedVideosReturn {
     if (!isInitialized) return
 
     try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify([...watchedIds]))
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(Array.from(watchedIds)))
     } catch (err) {
       console.error('Error saving watched videos to localStorage:', err)
     }
