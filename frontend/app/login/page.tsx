@@ -39,33 +39,32 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen bg-postit-light flex items-center justify-center px-4">
+    <div className="min-h-screen bg-netflix-black flex items-center justify-center px-4">
       <div className="w-full max-w-sm">
-        {/* Logo e titolo */}
+        {/* Logo */}
         <div className="text-center mb-8">
-          <Image
-            src="/logo-aba.png"
-            alt="Autoscuola ABA Logo"
-            width={280}
-            height={168}
-            className="h-20 w-auto object-contain mx-auto mb-4"
-            priority
-          />
-          <h1 className="text-2xl font-poppins font-bold text-gray-dark">
-            Archivio Lezioni Teoria
-          </h1>
-          <p className="text-gray-600 font-inter text-sm mt-2">
+          <div className="mb-6">
+            <Image
+              src="/logo-abatflix.png"
+              alt="ABAtflix - Il vostro Netflix per la Scuola Guida"
+              width={1200}
+              height={630}
+              className="h-32 md:h-40 w-auto object-contain mx-auto"
+              priority
+            />
+          </div>
+          <p className="text-netflix-text-muted font-inter text-xs">
             Inserisci la password per accedere
           </p>
         </div>
 
         {/* Form card */}
-        <div className="bg-white rounded-lg shadow-postit p-6">
+        <div className="bg-netflix-card rounded-lg shadow-card border border-netflix-border p-6">
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
               <label
                 htmlFor="password"
-                className="block text-sm font-inter font-medium text-gray-700 mb-1.5"
+                className="block text-sm font-inter font-medium text-netflix-text mb-1.5"
               >
                 Password
               </label>
@@ -80,9 +79,9 @@ export default function LoginPage() {
                 disabled={loading}
                 className="
                   w-full px-4 py-3
-                  border border-gray-300 rounded-lg
-                  font-inter text-gray-900
-                  placeholder:text-gray-400
+                  bg-netflix-surface border border-netflix-border rounded-lg
+                  font-inter text-white
+                  placeholder:text-netflix-text-muted
                   focus:outline-none focus:ring-2 focus:ring-aba-red focus:border-transparent
                   disabled:opacity-50 disabled:cursor-not-allowed
                   transition-all duration-200
@@ -91,7 +90,7 @@ export default function LoginPage() {
             </div>
 
             {error && (
-              <div className="bg-red-50 border border-red-200 text-aba-red px-4 py-3 rounded-lg text-sm font-inter">
+              <div className="bg-aba-red/10 border border-aba-red/30 text-aba-red-light px-4 py-3 rounded-lg text-sm font-inter">
                 {error}
               </div>
             )}
@@ -121,9 +120,19 @@ export default function LoginPage() {
           </form>
         </div>
 
-        <p className="text-center text-xs text-gray-400 font-inter mt-6">
-          Accesso riservato agli allievi di Autoscuola ABA
-        </p>
+        {/* Footer info */}
+        <div className="mt-6 space-y-3">
+          <p className="text-center text-sm text-netflix-text-secondary font-inter font-medium">
+            🔒 Accesso riservato agli allievi di Autoscuola ABA
+          </p>
+          <p className="text-center text-xs text-aba-red-light font-inter">
+            ⚠️ La divulgazione della password è severamente vietata
+          </p>
+          <div className="text-center text-xs text-netflix-text-muted font-inter">
+            <p>&copy; {new Date().getFullYear()} Autoscuola ABA - Tutti i diritti riservati</p>
+            <p className="mt-1">Bassano del Grappa &bull; Cartigliano</p>
+          </div>
+        </div>
       </div>
     </div>
   )

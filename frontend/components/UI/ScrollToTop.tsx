@@ -45,6 +45,7 @@ export default function ScrollToTop() {
         flex items-center justify-center
         z-50
         hover:scale-110 active:scale-95
+        border border-white/10
       "
       aria-label="Torna su"
     >

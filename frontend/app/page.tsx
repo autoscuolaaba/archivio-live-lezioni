@@ -8,39 +8,9 @@ import StatsBar from '@/components/Stats/StatsBar'
 import YearSection from '@/components/Sections/YearSection'
 import ScrollToTop from '@/components/UI/ScrollToTop'
 import NewVideosNotification from '@/components/UI/NewVideosNotification'
-
-interface Video {
-  id: string
-  title: string
-  published_at: string
-  year: number
-  month: number
-  duration_seconds: number
-  duration_formatted: string
-  thumbnail_url: string
-  watch_url: string
-}
-
-interface MonthData {
-  month: number
-  month_name: string
-  total: number
-  videos: Video[]
-}
-
-interface YearData {
-  year: number
-  total: number
-  months: MonthData[]
-}
-
-interface ApiResponse {
-  last_updated: string
-  total_videos: number
-  total_hours?: number
-  years?: YearData[]
-  videos?: Video[]
-}
+import RecommendedForYou from '@/components/Recommended/RecommendedForYou'
+import { useWatchedVideos } from '@/hooks/useWatchedVideos'
+import { Video, MonthData, YearData, ApiResponse } from '@/types/video'
 
 export default function Home() {
   const [data, setData] = useState<ApiResponse | null>(null)
@@ -48,13 +18,16 @@ export default function Home() {
   const [error, setError] = useState<string | null>(null)
   const [lastUpdated, setLastUpdated] = useState<string | null>(null)
 
+  // Watched videos hook
+  const { watchedIds, isWatched, markAsWatched, watchedCount } = useWatchedVideos()
+
   const fetchData = useCallback(async (silent = false) => {
     try {
       if (!silent) setLoading(true)
 
       const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'
       const response = await fetch(`${apiUrl}/api/videos`, {
-        cache: 'no-store' // Forza fetch fresco
+        cache: 'no-store'
       })
 
       if (!response.ok) {
@@ -63,7 +36,6 @@ export default function Home() {
 
       const jsonData = await response.json()
 
-      // Se API ritorna formato semplice (videos array), trasforma in formato grouped
       if (jsonData.videos && !jsonData.years) {
         const grouped = groupVideosByYearMonth(jsonData.videos)
         jsonData.years = grouped
@@ -83,14 +55,12 @@ export default function Home() {
     }
   }, [])
 
-  // Fetch iniziale
   useEffect(() => {
     fetchData()
   }, [fetchData])
 
-  // Auto-refresh: controlla ogni 5 minuti se ci sono nuovi video
   useEffect(() => {
-    const CHECK_INTERVAL = 5 * 60 * 1000 // 5 minuti
+    const CHECK_INTERVAL = 5 * 60 * 1000
 
     const checkForUpdates = async () => {
       try {
@@ -101,11 +71,8 @@ export default function Home() {
 
         if (response.ok) {
           const jsonData = await response.json()
-
-          // Se last_updated è cambiato, ci sono nuovi video
           if (lastUpdated && jsonData.last_updated !== lastUpdated) {
             console.log('🎉 Nuovi video rilevati!')
-            // Trigger notifica
             window.dispatchEvent(new Event('newVideosAvailable'))
           }
         }
@@ -115,7 +82,6 @@ export default function Home() {
     }
 
     const interval = setInterval(checkForUpdates, CHECK_INTERVAL)
-
     return () => clearInterval(interval)
   }, [lastUpdated])
 
@@ -126,10 +92,10 @@ export default function Home() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-postit-light">
+      <div className="min-h-screen flex items-center justify-center bg-netflix-black">
         <div className="text-center">
           <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-aba-red mx-auto mb-4"></div>
-          <p className="text-gray-700 font-inter">Caricamento lezioni...</p>
+          <p className="text-netflix-text-secondary font-inter">Caricamento lezioni...</p>
         </div>
       </div>
     )
@@ -137,12 +103,12 @@ export default function Home() {
 
   if (error || !data) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-postit-light">
+      <div className="min-h-screen flex items-center justify-center bg-netflix-black">
         <div className="text-center max-w-md p-8">
           <h2 className="text-2xl font-poppins font-bold text-aba-red mb-4">
-            ⚠️ Errore
+            Errore
           </h2>
-          <p className="text-gray-700 mb-4">
+          <p className="text-netflix-text-secondary mb-4">
             {error || 'Impossibile caricare i video'}
           </p>
           <button
@@ -160,8 +126,16 @@ export default function Home() {
   const totalVideos = data.total_videos || 0
   const totalHours = data.total_hours || 0
 
+  // Calculate total years
+  const totalYears = years.length
+
+  // Flatten all videos for recommendations
+  const allVideos: Video[] = years.flatMap(year =>
+    year.months.flatMap(month => month.videos)
+  )
+
   return (
-    <div className="min-h-screen bg-postit-light">
+    <div className="min-h-screen bg-netflix-black">
       <Header />
 
       <YearNavBar years={years.map(y => y.year)} />
@@ -169,32 +143,45 @@ export default function Home() {
       <StatsBar
         totalVideos={totalVideos}
         totalHours={totalHours}
-        firstVideoDate="maggio 2020"
+        watchedCount={watchedCount}
+        totalYears={totalYears}
       />
+
+      {/* Recommended section */}
+      <div className="container mx-auto px-4 pt-8 max-w-7xl">
+        <RecommendedForYou
+          allVideos={allVideos}
+          watchedIds={watchedIds}
+          isWatched={isWatched}
+          onWatch={markAsWatched}
+        />
+      </div>
 
       <main className="container mx-auto px-4 py-8 max-w-7xl">
         {years.length === 0 ? (
-          <p className="text-center text-gray-600 py-12">
+          <p className="text-center text-netflix-text-muted py-12">
             Nessuna lezione disponibile
           </p>
         ) : (
           years.map(yearData => (
-            <YearSection key={yearData.year} yearData={yearData} />
+            <YearSection
+              key={yearData.year}
+              yearData={yearData}
+              isWatched={isWatched}
+              onWatch={markAsWatched}
+              watchedIds={watchedIds}
+            />
           ))
         )}
       </main>
 
       <Footer />
-
       <ScrollToTop />
-
-      {/* Notifica nuovi video */}
       <NewVideosNotification onReload={handleReload} />
     </div>
   )
 }
 
-// Helper per raggruppare video per anno/mese
 function groupVideosByYearMonth(videos: Video[]): YearData[] {
   const MONTH_NAMES: { [key: number]: string } = {
     1: 'Gennaio', 2: 'Febbraio', 3: 'Marzo', 4: 'Aprile',

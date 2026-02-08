@@ -12,7 +12,7 @@ export default function YearNavBar({ years }: YearNavBarProps) {
   const scrollToYear = (year: number) => {
     const element = document.getElementById(`year-${year}`)
     if (element) {
-      const headerOffset = 150 // Offset per sticky headers
+      const headerOffset = 160 // Offset per header + navbar sticky (80px mobile, 112px desktop + navbar)
       const elementPosition = element.getBoundingClientRect().top
       const offsetPosition = elementPosition + window.pageYOffset - headerOffset
 
@@ -51,22 +51,30 @@ export default function YearNavBar({ years }: YearNavBarProps) {
   if (years.length === 0) return null
 
   return (
-    <nav className="bg-white border-b-2 border-gray-200 sticky top-[73px] z-40">
+    <nav className="bg-netflix-dark border-b border-netflix-border sticky top-[88px] md:top-[136px] z-40">
       <div className="container mx-auto px-4 max-w-7xl">
-        <div className="flex items-center gap-2 md:gap-2 overflow-x-auto py-3 scrollbar-hide">
+        {/* Description */}
+        <div className="pt-3 pb-3">
+          <p className="text-xs text-netflix-text-muted font-inter text-center">
+            Seleziona un anno per navigare rapidamente alle lezioni
+          </p>
+        </div>
+
+        {/* Year buttons */}
+        <div className="flex items-center gap-2 overflow-x-auto pb-3 scrollbar-hide">
           {years.map(year => (
             <button
               key={year}
               onClick={() => scrollToYear(year)}
               className={`
-                px-6 py-3 md:px-5 md:py-2
-                font-poppins font-semibold text-base md:text-sm
-                rounded-lg
+                px-6 py-2
+                font-poppins font-semibold text-sm
+                rounded-md
                 transition-all duration-200 whitespace-nowrap
-                active:scale-95
+                min-w-[72px]
                 ${activeYear === year
-                  ? 'bg-aba-red text-white border-b-3 border-aba-red-dark shadow-md'
-                  : 'text-gray-600 hover:bg-gray-100 active:bg-gray-200'
+                  ? 'bg-aba-red text-white shadow-lg hover:bg-aba-red-dark'
+                  : 'bg-netflix-surface text-netflix-text-secondary hover:text-white hover:bg-netflix-card'
                 }
               `}
             >
@@ -75,16 +83,6 @@ export default function YearNavBar({ years }: YearNavBarProps) {
           ))}
         </div>
       </div>
-
-      <style jsx>{`
-        .scrollbar-hide::-webkit-scrollbar {
-          display: none;
-        }
-        .scrollbar-hide {
-          -ms-overflow-style: none;
-          scrollbar-width: none;
-        }
-      `}</style>
     </nav>
   )
 }
