@@ -1,6 +1,7 @@
 'use client'
 
 import { Video } from '@/types/video'
+import Image from 'next/image'
 
 interface VideoCardProps {
   video: Video
@@ -28,21 +29,18 @@ export default function VideoCard({ video, isWatched, onWatch }: VideoCardProps)
       `}
     >
       {/* Thumbnail container */}
-      <div className="relative w-full aspect-video overflow-hidden">
-        <img
+      <div className="relative w-full aspect-video overflow-hidden bg-netflix-surface">
+        <Image
           src={video.thumbnail_url}
           alt={video.title}
-          loading="lazy"
+          fill
+          sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
           className={`
-            w-full h-full object-cover
+            object-cover
             transition-all duration-300
             ${isWatched ? 'opacity-50 saturate-50' : 'opacity-100'}
             group-hover:opacity-100 group-hover:saturate-100
           `}
-          onError={(e) => {
-            const target = e.target as HTMLImageElement
-            target.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="320" height="180"%3E%3Crect fill="%23333" width="320" height="180"/%3E%3Ctext fill="%23666" x="50%25" y="50%25" text-anchor="middle" dominant-baseline="middle" font-family="Arial" font-size="14"%3EVideo%3C/text%3E%3C/svg%3E'
-          }}
         />
 
         {/* Dark gradient overlay */}
