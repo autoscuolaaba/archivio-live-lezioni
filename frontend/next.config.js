@@ -9,18 +9,11 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: 'i.ytimg.com',
-        pathname: '/vi/**',
-      },
-      {
-        protocol: 'https',
-        hostname: 'i*.ytimg.com',
-        pathname: '/vi/**',
+        hostname: '**.ytimg.com',
       },
       {
         protocol: 'https',
         hostname: 'img.youtube.com',
-        pathname: '/vi/**',
       },
     ],
     // Se usi static export, decomment questa riga
