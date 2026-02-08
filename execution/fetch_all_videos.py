@@ -24,6 +24,7 @@ CHANNEL_ID = os.getenv('YOUTUBE_CHANNEL_ID', 'UC18Pm8LKXwtK2uUSoif5RVw')
 TOKEN_FILE = os.getenv('GOOGLE_TOKEN_FILE', 'token.json')
 SCOPES = ['https://www.googleapis.com/auth/youtube.readonly']
 OUTPUT_FILE = 'data/videos_cache.json'
+FRONTEND_CACHE_FILE = 'frontend/public/data/videos_cache.json'
 THUMBNAILS_DIR = 'frontend/public/thumbnails'
 LOG_FILE = '.tmp/fetch_errors.log'
 
@@ -347,7 +348,13 @@ def save_cache(videos):
     with open(OUTPUT_FILE, 'w', encoding='utf-8') as f:
         json.dump(cache_data, f, indent=2, ensure_ascii=False)
 
+    # Copia anche nella cartella public del frontend (servito direttamente da Vercel)
+    os.makedirs(os.path.dirname(FRONTEND_CACHE_FILE), exist_ok=True)
+    import shutil
+    shutil.copy2(OUTPUT_FILE, FRONTEND_CACHE_FILE)
+
     logger.info(f"Cache salvata in: {OUTPUT_FILE}")
+    logger.info(f"Cache copiata in: {FRONTEND_CACHE_FILE}")
     logger.info(f"Dimensione file: {os.path.getsize(OUTPUT_FILE) / 1024:.1f} KB")
 
     return total_hours, first_video_date, last_video_date

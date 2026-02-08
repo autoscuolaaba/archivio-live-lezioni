@@ -25,8 +25,7 @@ export default function Home() {
     try {
       if (!silent) setLoading(true)
 
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'
-      const response = await fetch(`${apiUrl}/api/videos`, {
+      const response = await fetch('/data/videos_cache.json', {
         cache: 'no-store'
       })
 
@@ -64,8 +63,7 @@ export default function Home() {
 
     const checkForUpdates = async () => {
       try {
-        const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'
-        const response = await fetch(`${apiUrl}/api/videos`, {
+        const response = await fetch('/data/videos_cache.json', {
           cache: 'no-store'
         })
 
