@@ -1,7 +1,6 @@
 'use client'
 
 import { Video } from '@/types/video'
-import Image from 'next/image'
 
 interface VideoCardProps {
   video: Video
@@ -29,14 +28,14 @@ export default function VideoCard({ video, isWatched, onWatch }: VideoCardProps)
       `}
     >
       {/* Thumbnail container */}
+      {/* eslint-disable-next-line @next/next/no-img-element */}
       <div className="relative w-full aspect-video overflow-hidden bg-netflix-surface">
-        <Image
+        <img
           src={video.thumbnail_url}
           alt={video.title}
-          fill
-          sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
+          loading="lazy"
           className={`
-            object-cover
+            absolute inset-0 w-full h-full object-cover
             transition-all duration-300
             ${isWatched ? 'opacity-50 saturate-50' : 'opacity-100'}
             group-hover:opacity-100 group-hover:saturate-100

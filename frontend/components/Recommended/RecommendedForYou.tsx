@@ -1,5 +1,4 @@
 import { Video } from '@/types/video'
-import Image from 'next/image'
 
 interface RecommendedForYouProps {
   allVideos: Video[]
@@ -65,13 +64,13 @@ export default function RecommendedForYou({ allVideos, watchedIds, isWatched, on
                 </div>
 
                 {/* Thumbnail */}
+                {/* eslint-disable-next-line @next/next/no-img-element */}
                 <div className="relative aspect-video bg-netflix-surface">
-                  <Image
+                  <img
                     src={video.thumbnail_url}
                     alt={video.title}
-                    fill
-                    sizes="(max-width: 768px) 280px, 320px"
-                    className="object-cover"
+                    loading="lazy"
+                    className="absolute inset-0 w-full h-full object-cover"
                   />
                   {/* Gradient overlay */}
                   <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-100 group-hover:opacity-70 transition-opacity duration-300" />

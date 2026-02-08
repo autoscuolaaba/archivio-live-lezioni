@@ -12,6 +12,8 @@ import json
 import logging
 from datetime import datetime
 from pathlib import Path
+from concurrent.futures import ThreadPoolExecutor, as_completed
+import requests
 import isodate
 from google.oauth2.credentials import Credentials
 from googleapiclient.discovery import build
@@ -22,6 +24,7 @@ CHANNEL_ID = os.getenv('YOUTUBE_CHANNEL_ID', 'UC18Pm8LKXwtK2uUSoif5RVw')
 TOKEN_FILE = os.getenv('GOOGLE_TOKEN_FILE', 'token.json')
 SCOPES = ['https://www.googleapis.com/auth/youtube.readonly']
 OUTPUT_FILE = 'data/videos_cache.json'
+THUMBNAILS_DIR = 'frontend/public/thumbnails'
 LOG_FILE = '.tmp/fetch_errors.log'
 
 # Setup logging
@@ -114,11 +117,14 @@ def get_all_playlist_items(youtube, playlist_id):
 
             for item in items:
                 video_id = item['snippet']['resourceId']['videoId']
+                # Save the API thumbnail URL (needed for download, especially for unlisted videos)
+                api_thumb_url = item['snippet']['thumbnails'].get('medium', {}).get('url', '')
                 video_data = {
                     'id': video_id,
                     'title': item['snippet']['title'],
                     'published_at': item['snippet']['publishedAt'],
-                    'thumbnail_url': f"https://i.ytimg.com/vi/{video_id}/mqdefault.jpg"
+                    'api_thumbnail_url': api_thumb_url,
+                    'thumbnail_url': f"/thumbnails/{video_id}.jpg"
                 }
                 all_videos.append(video_data)
 
@@ -243,6 +249,7 @@ def merge_and_filter_videos(playlist_videos, video_details):
             'duration_seconds': duration_seconds,
             'duration_formatted': duration_formatted,
             'thumbnail_url': video['thumbnail_url'],
+            'api_thumbnail_url': video.get('api_thumbnail_url', ''),
             'watch_url': f"https://www.youtube.com/watch?v={video_id}"
         }
 
@@ -254,6 +261,63 @@ def merge_and_filter_videos(playlist_videos, video_details):
         logger.warning(f"Video senza dettagli (eliminati): {missing_details_count}")
 
     return filtered_videos
+
+def download_single_thumbnail(video, thumbnails_dir):
+    """Scarica una singola thumbnail. Ritorna True se scaricata, False se skippata/errore."""
+    video_id = video['id']
+    filepath = os.path.join(thumbnails_dir, f"{video_id}.jpg")
+
+    # Skip se già scaricata
+    if os.path.exists(filepath) and os.path.getsize(filepath) > 500:
+        return 'skipped'
+
+    api_url = video.get('api_thumbnail_url', '')
+    if not api_url:
+        return 'no_url'
+
+    try:
+        response = requests.get(api_url, timeout=15)
+        if response.status_code == 200 and len(response.content) > 500:
+            with open(filepath, 'wb') as f:
+                f.write(response.content)
+            return 'downloaded'
+        else:
+            return 'failed'
+    except Exception:
+        return 'error'
+
+
+def download_all_thumbnails(videos, thumbnails_dir):
+    """Scarica tutte le thumbnail in parallelo."""
+    os.makedirs(thumbnails_dir, exist_ok=True)
+
+    logger.info(f"Step 5: Download thumbnail in {thumbnails_dir}")
+
+    downloaded = 0
+    skipped = 0
+    failed = 0
+
+    with ThreadPoolExecutor(max_workers=20) as executor:
+        futures = {
+            executor.submit(download_single_thumbnail, video, thumbnails_dir): video
+            for video in videos
+        }
+
+        for i, future in enumerate(as_completed(futures), 1):
+            result = future.result()
+            if result == 'downloaded':
+                downloaded += 1
+            elif result == 'skipped':
+                skipped += 1
+            else:
+                failed += 1
+
+            if i % 100 == 0:
+                logger.info(f"  Thumbnail progress: {i}/{len(videos)} (scaricate: {downloaded}, già presenti: {skipped}, fallite: {failed})")
+
+    logger.info(f"Thumbnail completate: {downloaded} scaricate, {skipped} già presenti, {failed} fallite")
+    return downloaded, skipped, failed
+
 
 def save_cache(videos):
     """Salva i video in data/videos_cache.json"""
@@ -316,7 +380,14 @@ def main():
             logger.error("Verifica che il canale abbia video con liveStreamingDetails")
             sys.exit(1)
 
-        # Step 5: Salva cache
+        # Step 5: Download thumbnail
+        download_all_thumbnails(live_videos, THUMBNAILS_DIR)
+
+        # Remove api_thumbnail_url from final data (internal use only)
+        for video in live_videos:
+            video.pop('api_thumbnail_url', None)
+
+        # Step 6: Salva cache
         total_hours, first_date, last_date = save_cache(live_videos)
 
         # Riepilogo finale
