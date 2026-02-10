@@ -46,7 +46,7 @@ export default function LoginPage() {
           <div className="mb-6">
             <Image
               src="/logo.png"
-              alt="ABAtflix - Il vostro Netflix per la Scuola Guida"
+              alt="ABAflix"
               width={1200}
               height={630}
               className="h-24 md:h-32 w-auto object-contain mx-auto"

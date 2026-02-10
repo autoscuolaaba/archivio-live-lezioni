@@ -8,7 +8,7 @@ export default function Header() {
           {/* Logo ABAtflix */}
           <Image
             src="/logo.png"
-            alt="ABAtflix - Il vostro Netflix per la Scuola Guida"
+            alt="ABAflix"
             width={1200}
             height={630}
             className="h-14 md:h-20 w-auto object-contain"
