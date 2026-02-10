@@ -7,7 +7,7 @@ export default function Header() {
         <div className="flex items-center justify-center">
           {/* Logo ABAtflix */}
           <Image
-            src="/logo-abatflix.png"
+            src="/logo.png"
             alt="ABAtflix - Il vostro Netflix per la Scuola Guida"
             width={1200}
             height={630}

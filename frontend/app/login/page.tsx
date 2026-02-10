@@ -45,7 +45,7 @@ export default function LoginPage() {
         <div className="text-center mb-8">
           <div className="mb-6">
             <Image
-              src="/logo-abatflix.png"
+              src="/logo.png"
               alt="ABAtflix - Il vostro Netflix per la Scuola Guida"
               width={1200}
               height={630}
