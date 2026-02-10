@@ -1,14 +1,26 @@
 {
-  "last_updated": "2026-02-10T04:32:38.252822Z",
-  "total_videos": 1565,
+  "last_updated": "2026-02-10T21:54:13.254875Z",
+  "total_videos": 1566,
+  "total_hours": 1349,
   "videos": [
+    {
+      "id": "PDa0BX3FVNU",
+      "title": "Lezione del 10/02/2026",
+      "published_at": "2026-02-10T15:36:48Z",
+      "year": 2026,
+      "month": 2,
+      "duration_seconds": 0,
+      "duration_formatted": "0s",
+      "thumbnail_url": "/thumbnails/PDa0BX3FVNU.jpg",
+      "watch_url": "https://www.youtube.com/watch?v=PDa0BX3FVNU"
+    },
     {
       "id": "mdtRdzj-ybs",
       "title": "Lezione del 09/02/2026",
       "published_at": "2026-02-09T19:34:31Z",
       "year": 2026,
       "month": 2,
-      "duration_seconds": 3534,
+      "duration_seconds": 3531,
       "duration_formatted": "58m",
       "thumbnail_url": "/thumbnails/mdtRdzj-ybs.jpg",
       "watch_url": "https://www.youtube.com/watch?v=mdtRdzj-ybs"
@@ -2126,17 +2138,6 @@
       "watch_url": "https://www.youtube.com/watch?v=1uI6Uxu0uYI"
     },
     {
-      "id": "qKNiji2I4Io",
-      "title": "Lezione del 05/05/2025",
-      "published_at": "2025-05-05T18:33:21Z",
-      "year": 2025,
-      "month": 5,
-      "duration_seconds": 3251,
-      "duration_formatted": "54m",
-      "thumbnail_url": "/thumbnails/qKNiji2I4Io.jpg",
-      "watch_url": "https://www.youtube.com/watch?v=qKNiji2I4Io"
-    },
-    {
       "id": "ecX4tPfIsGE",
       "title": "Pillole di Meccanica - il Differenziale",
       "published_at": "2025-05-04T18:00:06Z",
@@ -2157,6 +2158,17 @@
       "duration_formatted": "15m",
       "thumbnail_url": "/thumbnails/XKIy8wt8pjs.jpg",
       "watch_url": "https://www.youtube.com/watch?v=XKIy8wt8pjs"
+    },
+    {
+      "id": "hfh0MfBubmc",
+      "title": "Lezione del 28/04/2025",
+      "published_at": "2025-04-28T18:31:59Z",
+      "year": 2025,
+      "month": 4,
+      "duration_seconds": 3707,
+      "duration_formatted": "1h 1m",
+      "thumbnail_url": "/thumbnails/hfh0MfBubmc.jpg",
+      "watch_url": "https://www.youtube.com/watch?v=hfh0MfBubmc"
     },
     {
       "id": "_VsyINlLP6g",
@@ -2643,17 +2655,6 @@
       "watch_url": "https://www.youtube.com/watch?v=_nKHpiDBPak"
     },
     {
-      "id": "_nKHpiDBPak",
-      "title": "Pillole di Meccanica - Il Servofreno a Depressione",
-      "published_at": "2025-03-12T17:00:06Z",
-      "year": 2025,
-      "month": 3,
-      "duration_seconds": 410,
-      "duration_formatted": "6m",
-      "thumbnail_url": "/thumbnails/_nKHpiDBPak.jpg",
-      "watch_url": "https://www.youtube.com/watch?v=_nKHpiDBPak"
-    },
-    {
       "id": "aie6Ih3ujKI",
       "title": "L' Avvocato Risponde - Fondo di Garanzia Vittime della Strada",
       "published_at": "2025-03-10T13:00:06Z",
@@ -2685,6 +2686,17 @@
       "duration_formatted": "6m",
       "thumbnail_url": "/thumbnails/Ho3k2r12mh8.jpg",
       "watch_url": "https://www.youtube.com/watch?v=Ho3k2r12mh8"
+    },
+    {
+      "id": "vhuPsg0Q9DA",
+      "title": "Lezione del 06/03/2025",
+      "published_at": "2025-03-06T19:34:05Z",
+      "year": 2025,
+      "month": 3,
+      "duration_seconds": 3875,
+      "duration_formatted": "1h 4m",
+      "thumbnail_url": "/thumbnails/vhuPsg0Q9DA.jpg",
+      "watch_url": "https://www.youtube.com/watch?v=vhuPsg0Q9DA"
     },
     {
       "id": "ZhG-ShpnbMg",

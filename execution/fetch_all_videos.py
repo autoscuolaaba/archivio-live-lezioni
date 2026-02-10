@@ -341,6 +341,7 @@ def save_cache(videos):
     cache_data = {
         'last_updated': datetime.utcnow().isoformat() + 'Z',
         'total_videos': len(videos_sorted),
+        'total_hours': int(total_hours),
         'videos': videos_sorted
     }
 
