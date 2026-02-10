@@ -49,7 +49,7 @@ export default function LoginPage() {
               alt="ABAtflix - Il vostro Netflix per la Scuola Guida"
               width={1200}
               height={630}
-              className="h-32 md:h-40 w-auto object-contain mx-auto"
+              className="h-24 md:h-32 w-auto object-contain mx-auto"
               priority
             />
           </div>

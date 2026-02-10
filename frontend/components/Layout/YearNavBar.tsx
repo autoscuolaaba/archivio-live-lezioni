@@ -51,10 +51,10 @@ export default function YearNavBar({ years }: YearNavBarProps) {
   if (years.length === 0) return null
 
   return (
-    <nav className="bg-netflix-dark border-b border-netflix-border sticky top-[88px] md:top-[136px] z-40">
+    <nav className="bg-netflix-dark border-b border-netflix-border">
       <div className="container mx-auto px-4 max-w-7xl">
         {/* Description */}
-        <div className="pt-3 pb-3">
+        <div className="pt-2 pb-2">
           <p className="text-xs text-netflix-text-muted font-inter text-center">
             Seleziona un anno per navigare rapidamente alle lezioni
           </p>

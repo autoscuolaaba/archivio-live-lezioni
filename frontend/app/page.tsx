@@ -134,9 +134,10 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-netflix-black">
-      <Header />
-
-      <YearNavBar years={years.map(y => y.year)} />
+      <div className="sticky top-0 z-50 bg-netflix-dark">
+        <Header />
+        <YearNavBar years={years.map(y => y.year)} />
+      </div>
 
       <StatsBar
         totalVideos={totalVideos}
