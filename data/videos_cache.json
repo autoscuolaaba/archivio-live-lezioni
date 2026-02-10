@@ -1,15 +1,15 @@
 {
-  "last_updated": "2026-02-09T04:28:40.148295Z",
+  "last_updated": "2026-02-10T04:32:38.252822Z",
   "total_videos": 1565,
   "videos": [
     {
       "id": "mdtRdzj-ybs",
-      "title": "Lezione del 05/02/2026",
-      "published_at": "2026-02-05T08:48:38Z",
+      "title": "Lezione del 09/02/2026",
+      "published_at": "2026-02-09T19:34:31Z",
       "year": 2026,
       "month": 2,
-      "duration_seconds": 0,
-      "duration_formatted": "0s",
+      "duration_seconds": 3534,
+      "duration_formatted": "58m",
       "thumbnail_url": "/thumbnails/mdtRdzj-ybs.jpg",
       "watch_url": "https://www.youtube.com/watch?v=mdtRdzj-ybs"
     },
