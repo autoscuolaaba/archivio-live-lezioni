@@ -7,11 +7,11 @@ const CLEANUP_INTERVAL_MS = 30 * 60 * 1000 // 30 minuti
 // Auto-pulizia delle entries scadute
 setInterval(() => {
   const now = Date.now()
-  for (const [key, value] of attempts.entries()) {
+  attempts.forEach((value, key) => {
     if (now - value.firstAttempt > WINDOW_MS) {
       attempts.delete(key)
     }
-  }
+  })
 }, CLEANUP_INTERVAL_MS)
 
 export function checkRateLimit(ip: string): { allowed: boolean; remainingAttempts: number; retryAfterSeconds?: number } {
