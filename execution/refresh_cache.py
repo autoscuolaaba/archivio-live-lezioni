@@ -124,7 +124,7 @@ def get_recent_playlist_items(youtube, playlist_id, max_pages=2):
                     'id': item['snippet']['resourceId']['videoId'],
                     'title': item['snippet']['title'],
                     'published_at': item['snippet']['publishedAt'],
-                    'thumbnail_url': item['snippet']['thumbnails']['medium']['url']
+                    'thumbnail_url': '/thumbnail-default.png'
                 }
                 all_videos.append(video_data)
 
@@ -322,7 +322,7 @@ def main():
                 'month': published_datetime.month,
                 'duration_seconds': duration_seconds,
                 'duration_formatted': duration_formatted,
-                'thumbnail_url': video['thumbnail_url'],
+                'thumbnail_url': '/thumbnail-default.png',
                 'watch_url': f"https://www.youtube.com/watch?v={video_id}"
             }
 

@@ -31,7 +31,7 @@ export default function VideoCard({ video, isWatched, onWatch }: VideoCardProps)
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <div className="relative w-full aspect-video overflow-hidden bg-netflix-surface">
         <img
-          src={video.thumbnail_url}
+          src="/thumbnail-default.png"
           alt={video.title}
           loading="lazy"
           className={`

@@ -67,7 +67,7 @@ export default function RecommendedForYou({ allVideos, watchedIds, isWatched, on
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <div className="relative aspect-video bg-netflix-surface">
                   <img
-                    src={video.thumbnail_url}
+                    src="/thumbnail-default.png"
                     alt={video.title}
                     loading="lazy"
                     className="absolute inset-0 w-full h-full object-cover"
