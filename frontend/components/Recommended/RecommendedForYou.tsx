@@ -38,7 +38,10 @@ export default function RecommendedForYou({ allVideos, watchedIds, isWatched, on
             <div
               key={video.id}
               className="flex-shrink-0 w-[280px] md:w-[320px] snap-start group cursor-pointer"
-              onClick={() => onWatch(video.id)}
+              onClick={() => {
+                onWatch(video.id)
+                window.open(video.watch_url, '_blank', 'noopener,noreferrer')
+              }}
             >
               {/* Card */}
               <div className="relative bg-netflix-card rounded-lg overflow-hidden shadow-card hover:shadow-card-hover transition-all duration-300 hover:scale-105 hover:z-10">
