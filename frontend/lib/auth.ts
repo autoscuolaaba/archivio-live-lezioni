@@ -43,6 +43,19 @@ export async function verifySessionToken(token: string): Promise<boolean> {
   }
 }
 
+export async function getSessionUser(token: string): Promise<{ nome: string; email: string } | null> {
+  try {
+    const secret = getJwtSecret()
+    const { payload } = await jwtVerify(token, secret)
+    return {
+      nome: payload.nome as string,
+      email: payload.email as string,
+    }
+  } catch {
+    return null
+  }
+}
+
 export function getSessionCookieConfig(token: string) {
   const durationDays = getSessionDurationDays()
   return {

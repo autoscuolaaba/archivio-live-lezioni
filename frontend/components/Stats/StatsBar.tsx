@@ -2,10 +2,9 @@ interface StatsBarProps {
   totalVideos: number
   totalHours: number
   watchedCount: number
-  totalYears?: number
 }
 
-export default function StatsBar({ totalVideos, totalHours, watchedCount, totalYears }: StatsBarProps) {
+export default function StatsBar({ totalVideos, totalHours, watchedCount }: StatsBarProps) {
   const watchedPercentage = totalVideos > 0 ? Math.round((watchedCount / totalVideos) * 100) : 0
 
   return (
@@ -21,20 +20,6 @@ export default function StatsBar({ totalVideos, totalHours, watchedCount, totalY
           </div>
 
           <div className="text-netflix-border/30 hidden md:block text-2xl">|</div>
-
-          {/* Total years */}
-          {totalYears && totalYears > 0 && (
-            <>
-              <div className="text-center">
-                <div className="font-inter font-bold text-white text-2xl md:text-3xl">
-                  {totalYears}
-                </div>
-                <div className="text-netflix-text-secondary text-xs md:text-sm mt-0.5">anni</div>
-              </div>
-
-              <div className="text-netflix-border/30 hidden md:block text-2xl">|</div>
-            </>
-          )}
 
           {/* Total hours */}
           <div className="text-center">

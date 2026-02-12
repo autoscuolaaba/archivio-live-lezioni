@@ -12,11 +12,27 @@ import RecommendedForYou from '@/components/Recommended/RecommendedForYou'
 import { useWatchedVideos } from '@/hooks/useWatchedVideos'
 import { Video, MonthData, YearData, ApiResponse } from '@/types/video'
 
+function getGreeting(): { text: string; emoji: string } {
+  const hour = new Date().getHours()
+  if (hour >= 5 && hour < 13) {
+    const emojis = ['☀️', '🌅', '☕', '🌞', '🫶']
+    return { text: 'Buongiorno', emoji: emojis[Math.floor(Math.random() * emojis.length)] }
+  }
+  if (hour >= 13 && hour < 18) {
+    const emojis = ['📚', '💪', '🎯', '🚀', '✨']
+    return { text: 'Buon pomeriggio', emoji: emojis[Math.floor(Math.random() * emojis.length)] }
+  }
+  const emojis = ['🌙', '🌟', '🦉', '✨', '💫']
+  return { text: 'Buonasera', emoji: emojis[Math.floor(Math.random() * emojis.length)] }
+}
+
 export default function Home() {
   const [data, setData] = useState<ApiResponse | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [lastUpdated, setLastUpdated] = useState<string | null>(null)
+  const [userName, setUserName] = useState<string | null>(null)
+  const [greeting] = useState(() => getGreeting())
 
   // Watched videos hook
   const { watchedIds, isWatched, markAsWatched, watchedCount } = useWatchedVideos()
@@ -56,6 +72,10 @@ export default function Home() {
 
   useEffect(() => {
     fetchData()
+    fetch('/api/auth/me')
+      .then(res => res.ok ? res.json() : null)
+      .then(data => { if (data?.nome) setUserName(data.nome) })
+      .catch(() => {})
   }, [fetchData])
 
   useEffect(() => {
@@ -124,9 +144,6 @@ export default function Home() {
   const totalVideos = data.total_videos || 0
   const totalHours = data.total_hours || 0
 
-  // Calculate total years
-  const totalYears = years.length
-
   // Flatten all videos for recommendations
   const allVideos: Video[] = years.flatMap(year =>
     year.months.flatMap(month => month.videos)
@@ -139,11 +156,20 @@ export default function Home() {
         <YearNavBar years={years.map(y => y.year)} />
       </div>
 
+      {userName && (
+        <div className="bg-netflix-dark/60 border-b border-netflix-border py-5 md:py-6">
+          <div className="container mx-auto px-4 max-w-7xl text-center">
+            <p className="text-netflix-text-secondary font-poppins text-xl md:text-2xl">
+              {greeting.text}, <span className="font-bold text-white">{userName}</span>! {greeting.emoji}
+            </p>
+          </div>
+        </div>
+      )}
+
       <StatsBar
         totalVideos={totalVideos}
         totalHours={totalHours}
         watchedCount={watchedCount}
-        totalYears={totalYears}
       />
 
       {/* Recommended section */}
