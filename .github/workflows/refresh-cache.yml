@@ -48,7 +48,7 @@ jobs:
       - name: Check for changes
         id: check_changes
         run: |
-          if git diff --quiet data/videos_cache.json frontend/public/data/videos_cache.json frontend/public/thumbnails/; then
+          if git diff --quiet data/videos_cache.json frontend/public/data/videos_cache.json; then
             echo "changed=false" >> $GITHUB_OUTPUT
             echo "ℹ️  Nessun nuovo video trovato"
           else
@@ -63,7 +63,7 @@ jobs:
         run: |
           git config user.name "GitHub Actions Bot"
           git config user.email "actions@github.com"
-          git add data/videos_cache.json frontend/public/data/videos_cache.json frontend/public/thumbnails/
+          git add data/videos_cache.json frontend/public/data/videos_cache.json
           git commit -m "🔄 Auto-refresh: aggiornamento cache video (${{ steps.check_changes.outputs.count }} video)
 
           - Eseguito da GitHub Actions
