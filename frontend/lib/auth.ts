@@ -15,11 +15,16 @@ function getSessionDurationDays(): number {
   return days ? parseInt(days, 10) : 14
 }
 
-export async function createSessionToken(): Promise<string> {
+export async function createSessionToken(user: { email: string; id: string; nome: string }): Promise<string> {
   const secret = getJwtSecret()
   const durationDays = getSessionDurationDays()
 
-  const token = await new SignJWT({ authorized: true })
+  const token = await new SignJWT({
+    authorized: true,
+    email: user.email,
+    userId: user.id,
+    nome: user.nome,
+  })
     .setProtectedHeader({ alg: 'HS256' })
     .setIssuedAt()
     .setExpirationTime(`${durationDays}d`)

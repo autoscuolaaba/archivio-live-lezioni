@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import Image from 'next/image'
 
 export default function LoginPage() {
+  const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
@@ -19,7 +20,7 @@ export default function LoginPage() {
       const response = await fetch('/api/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ password }),
+        body: JSON.stringify({ email, password }),
       })
 
       const data = await response.json()
@@ -28,7 +29,7 @@ export default function LoginPage() {
         router.push('/')
         router.refresh()
       } else {
-        setError(data.error || 'Password non valida')
+        setError(data.error || 'Credenziali non valide')
         setPassword('')
       }
     } catch {
@@ -54,13 +55,42 @@ export default function LoginPage() {
             />
           </div>
           <p className="text-netflix-text-muted font-inter text-xs">
-            Inserisci la password per accedere
+            Accedi con le tue credenziali
           </p>
         </div>
 
         {/* Form card */}
         <div className="bg-netflix-card rounded-lg shadow-card border border-netflix-border p-6">
           <form onSubmit={handleSubmit} className="space-y-4">
+            <div>
+              <label
+                htmlFor="email"
+                className="block text-sm font-inter font-medium text-netflix-text mb-1.5"
+              >
+                Email
+              </label>
+              <input
+                id="email"
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="La tua email"
+                required
+                autoFocus
+                autoComplete="email"
+                disabled={loading}
+                className="
+                  w-full px-4 py-3
+                  bg-netflix-surface border border-netflix-border rounded-lg
+                  font-inter text-white
+                  placeholder:text-netflix-text-muted
+                  focus:outline-none focus:ring-2 focus:ring-aba-red focus:border-transparent
+                  disabled:opacity-50 disabled:cursor-not-allowed
+                  transition-all duration-200
+                "
+              />
+            </div>
+
             <div>
               <label
                 htmlFor="password"
@@ -73,9 +103,9 @@ export default function LoginPage() {
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                placeholder="Inserisci la password"
+                placeholder="La tua password"
                 required
-                autoFocus
+                autoComplete="current-password"
                 disabled={loading}
                 className="
                   w-full px-4 py-3
@@ -90,14 +120,17 @@ export default function LoginPage() {
             </div>
 
             {error && (
-              <div className="bg-aba-red/10 border border-aba-red/30 text-aba-red-light px-4 py-3 rounded-lg text-sm font-inter">
-                {error}
+              <div className="bg-amber-500/10 border border-amber-500/40 rounded-xl px-5 py-4 text-center">
+                <span className="text-2xl block mb-2">⚠️</span>
+                <p className="text-amber-200 font-inter text-sm font-medium leading-relaxed">
+                  {error}
+                </p>
               </div>
             )}
 
             <button
               type="submit"
-              disabled={loading || !password}
+              disabled={loading || !email || !password}
               className="
                 w-full py-3
                 bg-aba-red hover:bg-aba-red-dark active:bg-aba-red-dark
@@ -124,9 +157,6 @@ export default function LoginPage() {
         <div className="mt-6 space-y-3">
           <p className="text-center text-sm text-netflix-text-secondary font-inter font-medium">
             🔒 Accesso riservato agli allievi di Autoscuola ABA
-          </p>
-          <p className="text-center text-xs text-aba-red-light font-inter">
-            ⚠️ La divulgazione della password è severamente vietata
           </p>
           <div className="text-center text-xs text-netflix-text-muted font-inter">
             <p>&copy; {new Date().getFullYear()} Autoscuola ABA - Tutti i diritti riservati</p>
