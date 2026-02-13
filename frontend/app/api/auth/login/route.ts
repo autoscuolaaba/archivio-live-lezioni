@@ -121,6 +121,7 @@ export async function POST(request: NextRequest) {
       email: allievo.email,
       id: allievo.id,
       nome: allievo.nome,
+      passwordHash: allievo.password_hash,
     })
     const cookieConfig = getSessionCookieConfig(token)
 

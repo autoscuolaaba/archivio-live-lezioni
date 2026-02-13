@@ -20,12 +20,20 @@ export async function GET() {
   // Verifica che l'utente esista ancora nel database
   const { data: allievo } = await supabaseAdmin
     .from('allievi')
-    .select('id, nome')
+    .select('id, nome, password_hash')
     .eq('email', user.email)
     .single()
 
   if (!allievo) {
     return NextResponse.json({ nome: null }, { status: 401 })
+  }
+
+  // Se la password è cambiata dopo il login, invalida la sessione
+  if (user.pwv && allievo.password_hash) {
+    const currentPwv = allievo.password_hash.slice(-8)
+    if (user.pwv !== currentPwv) {
+      return NextResponse.json({ nome: null }, { status: 401 })
+    }
   }
 
   return NextResponse.json({ nome: allievo.nome })

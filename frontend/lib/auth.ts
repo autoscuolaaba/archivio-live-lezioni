@@ -15,7 +15,7 @@ function getSessionDurationDays(): number {
   return days ? parseInt(days, 10) : 14
 }
 
-export async function createSessionToken(user: { email: string; id: string; nome: string }): Promise<string> {
+export async function createSessionToken(user: { email: string; id: string; nome: string; passwordHash?: string }): Promise<string> {
   const secret = getJwtSecret()
   const durationDays = getSessionDurationDays()
 
@@ -24,6 +24,7 @@ export async function createSessionToken(user: { email: string; id: string; nome
     email: user.email,
     userId: user.id,
     nome: user.nome,
+    pwv: user.passwordHash ? user.passwordHash.slice(-8) : undefined,
   })
     .setProtectedHeader({ alg: 'HS256' })
     .setIssuedAt()
@@ -47,7 +48,7 @@ export async function verifySessionToken(token: string): Promise<boolean> {
   }
 }
 
-export async function getSessionUser(token: string): Promise<{ nome: string; email: string } | null> {
+export async function getSessionUser(token: string): Promise<{ nome: string; email: string; pwv?: string } | null> {
   try {
     const secret = getJwtSecret()
     const { payload } = await jwtVerify(token, secret)
@@ -56,7 +57,7 @@ export async function getSessionUser(token: string): Promise<{ nome: string; ema
     if (!nome || !email) {
       return null
     }
-    return { nome, email }
+    return { nome, email, pwv: payload.pwv as string | undefined }
   } catch {
     return null
   }

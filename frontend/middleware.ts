@@ -42,7 +42,7 @@ export async function middleware(request: NextRequest) {
 
     const { data: allievo } = await supabase
       .from('allievi')
-      .select('id')
+      .select('id, password_hash')
       .eq('email', payload.email)
       .single()
 
@@ -51,6 +51,16 @@ export async function middleware(request: NextRequest) {
       const response = redirectToLogin(request)
       response.cookies.delete(COOKIE_NAME)
       return response
+    }
+
+    // Se la password è cambiata dopo il login, invalida la sessione
+    if (payload.pwv && allievo.password_hash) {
+      const currentPwv = allievo.password_hash.slice(-8)
+      if (payload.pwv !== currentPwv) {
+        const response = redirectToLogin(request)
+        response.cookies.delete(COOKIE_NAME)
+        return response
+      }
     }
 
     return NextResponse.next()
