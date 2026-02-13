@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { jwtVerify } from 'jose'
+import { createClient } from '@supabase/supabase-js'
 
 const COOKIE_NAME = 'aba-session'
 
@@ -31,6 +32,27 @@ export async function middleware(request: NextRequest) {
       response.cookies.delete(COOKIE_NAME)
       return response
     }
+
+    // Verifica che l'utente esista ancora nel database
+    const supabase = createClient(
+      process.env.SUPABASE_URL!,
+      process.env.SUPABASE_SERVICE_ROLE_KEY!,
+      { auth: { autoRefreshToken: false, persistSession: false } }
+    )
+
+    const { data: allievo } = await supabase
+      .from('allievi')
+      .select('id')
+      .eq('email', payload.email)
+      .single()
+
+    // Se l'utente non esiste più, invalida la sessione
+    if (!allievo) {
+      const response = redirectToLogin(request)
+      response.cookies.delete(COOKIE_NAME)
+      return response
+    }
+
     return NextResponse.next()
   } catch {
     const response = redirectToLogin(request)

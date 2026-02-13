@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import { cookies } from 'next/headers'
 import { COOKIE_NAME, getSessionUser } from '@/lib/auth'
+import { supabaseAdmin } from '@/lib/supabase'
 
 export async function GET() {
   const cookieStore = cookies()
@@ -16,5 +17,16 @@ export async function GET() {
     return NextResponse.json({ nome: null }, { status: 401 })
   }
 
-  return NextResponse.json({ nome: user.nome })
+  // Verifica che l'utente esista ancora nel database
+  const { data: allievo } = await supabaseAdmin
+    .from('allievi')
+    .select('id, nome')
+    .eq('email', user.email)
+    .single()
+
+  if (!allievo) {
+    return NextResponse.json({ nome: null }, { status: 401 })
+  }
+
+  return NextResponse.json({ nome: allievo.nome })
 }
