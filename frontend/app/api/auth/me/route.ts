@@ -28,12 +28,9 @@ export async function GET() {
     return NextResponse.json({ nome: null }, { status: 401 })
   }
 
-  // Se la password è cambiata dopo il login, invalida la sessione
-  if (user.pwv && allievo.password_hash) {
-    const currentPwv = allievo.password_hash.slice(-8)
-    if (user.pwv !== currentPwv) {
-      return NextResponse.json({ nome: null }, { status: 401 })
-    }
+  // Invalida sessioni senza pwv (token vecchi) o con password cambiata
+  if (!user.pwv || !allievo.password_hash || user.pwv !== allievo.password_hash.slice(-8)) {
+    return NextResponse.json({ nome: null }, { status: 401 })
   }
 
   return NextResponse.json({ nome: allievo.nome })

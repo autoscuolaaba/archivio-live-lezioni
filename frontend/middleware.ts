@@ -53,14 +53,11 @@ export async function middleware(request: NextRequest) {
       return response
     }
 
-    // Se la password è cambiata dopo il login, invalida la sessione
-    if (payload.pwv && allievo.password_hash) {
-      const currentPwv = allievo.password_hash.slice(-8)
-      if (payload.pwv !== currentPwv) {
-        const response = redirectToLogin(request)
-        response.cookies.delete(COOKIE_NAME)
-        return response
-      }
+    // Invalida sessioni senza pwv (token vecchi) o con password cambiata
+    if (!payload.pwv || !allievo.password_hash || payload.pwv !== allievo.password_hash.slice(-8)) {
+      const response = redirectToLogin(request)
+      response.cookies.delete(COOKIE_NAME)
+      return response
     }
 
     return NextResponse.next()
