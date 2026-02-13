@@ -110,10 +110,10 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // 6. Aggiorna ultimo_accesso
+    // 6. Aggiorna ultimo_accesso_lezioni (specifico per ABAflix)
     await supabaseAdmin
       .from('allievi')
-      .update({ ultimo_accesso: new Date().toISOString() })
+      .update({ ultimo_accesso_lezioni: new Date().toISOString() })
       .eq('id', allievo.id)
 
     // 7. Login riuscito - crea sessione con dati utente
