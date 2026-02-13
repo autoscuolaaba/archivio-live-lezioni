@@ -78,8 +78,8 @@ export default function LoginPage() {
               priority
             />
           </div>
-          <p className="text-netflix-text-muted font-inter text-xs">
-            Accedi con le tue credenziali
+          <p className="text-netflix-text-muted font-inter text-sm">
+            Usa le stesse credenziali della tua Area Riservata
           </p>
         </div>
 
