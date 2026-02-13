@@ -79,7 +79,7 @@ export default function LoginPage() {
             />
           </div>
           <p className="text-netflix-text-muted font-inter text-sm">
-            Usa le stesse credenziali della tua Area Riservata
+            Usa le stesse credenziali della tua Area Privata
           </p>
         </div>
 
