@@ -71,11 +71,24 @@ export default function Home() {
   }, [])
 
   useEffect(() => {
-    fetchData()
+    // Verifica autenticazione prima di caricare i dati
     fetch('/api/auth/me')
-      .then(res => res.ok ? res.json() : null)
-      .then(data => { if (data?.nome) setUserName(data.nome) })
-      .catch(() => {})
+      .then(res => {
+        if (!res.ok) {
+          window.location.href = '/login'
+          return null
+        }
+        return res.json()
+      })
+      .then(data => {
+        if (data) {
+          if (data.nome) setUserName(data.nome)
+          fetchData()
+        }
+      })
+      .catch(() => {
+        window.location.href = '/login'
+      })
   }, [fetchData])
 
   useEffect(() => {

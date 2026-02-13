@@ -24,7 +24,13 @@ export async function middleware(request: NextRequest) {
 
   try {
     const secret = new TextEncoder().encode(process.env.JWT_SECRET)
-    await jwtVerify(sessionCookie.value, secret)
+    const { payload } = await jwtVerify(sessionCookie.value, secret)
+    // Invalida vecchie sessioni senza claims essenziali
+    if (!payload.email || !payload.nome) {
+      const response = redirectToLogin(request)
+      response.cookies.delete(COOKIE_NAME)
+      return response
+    }
     return NextResponse.next()
   } catch {
     const response = redirectToLogin(request)

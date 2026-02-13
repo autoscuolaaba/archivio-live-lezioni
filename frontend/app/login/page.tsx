@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, FormEvent } from 'react'
+import { useState, useEffect, FormEvent } from 'react'
 import { useRouter } from 'next/navigation'
 import Image from 'next/image'
 
@@ -9,7 +9,31 @@ export default function LoginPage() {
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
+  const [checkingAuth, setCheckingAuth] = useState(true)
   const router = useRouter()
+
+  // Se l'utente è già autenticato, redirect alla home
+  useEffect(() => {
+    fetch('/api/auth/me')
+      .then(res => {
+        if (res.ok) {
+          router.push('/')
+        } else {
+          setCheckingAuth(false)
+        }
+      })
+      .catch(() => {
+        setCheckingAuth(false)
+      })
+  }, [router])
+
+  if (checkingAuth) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-netflix-black">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-aba-red"></div>
+      </div>
+    )
+  }
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault()

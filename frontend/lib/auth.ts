@@ -36,7 +36,11 @@ export async function createSessionToken(user: { email: string; id: string; nome
 export async function verifySessionToken(token: string): Promise<boolean> {
   try {
     const secret = getJwtSecret()
-    await jwtVerify(token, secret)
+    const { payload } = await jwtVerify(token, secret)
+    // Richiedi claims essenziali per sessioni valide (invalida vecchie sessioni)
+    if (!payload.email || !payload.nome) {
+      return false
+    }
     return true
   } catch {
     return false
@@ -47,10 +51,12 @@ export async function getSessionUser(token: string): Promise<{ nome: string; ema
   try {
     const secret = getJwtSecret()
     const { payload } = await jwtVerify(token, secret)
-    return {
-      nome: payload.nome as string,
-      email: payload.email as string,
+    const nome = payload.nome as string
+    const email = payload.email as string
+    if (!nome || !email) {
+      return null
     }
+    return { nome, email }
   } catch {
     return null
   }
