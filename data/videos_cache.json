@@ -1,8 +1,19 @@
 {
-  "last_updated": "2026-02-12T08:21:50.424319Z",
-  "total_videos": 1566,
-  "total_hours": 1350,
+  "last_updated": "2026-02-13T04:23:17.845680Z",
+  "total_videos": 1567,
+  "total_hours": 1352,
   "videos": [
+    {
+      "id": "WUj7WCwXThE",
+      "title": "Lezione del 12/02/2026",
+      "published_at": "2026-02-12T19:34:49Z",
+      "year": 2026,
+      "month": 2,
+      "duration_seconds": 3434,
+      "duration_formatted": "57m",
+      "thumbnail_url": "/thumbnail-default.png",
+      "watch_url": "https://www.youtube.com/watch?v=WUj7WCwXThE"
+    },
     {
       "id": "PDa0BX3FVNU",
       "title": "Lezione del 11/02/2026",
@@ -2127,17 +2138,6 @@
       "watch_url": "https://www.youtube.com/watch?v=ggaNgHVSyYI"
     },
     {
-      "id": "1uI6Uxu0uYI",
-      "title": "Lezione del 06/05/2025 Pomeriggio",
-      "published_at": "2025-05-06T15:07:16Z",
-      "year": 2025,
-      "month": 5,
-      "duration_seconds": 2331,
-      "duration_formatted": "38m",
-      "thumbnail_url": "/thumbnail-default.png",
-      "watch_url": "https://www.youtube.com/watch?v=1uI6Uxu0uYI"
-    },
-    {
       "id": "ecX4tPfIsGE",
       "title": "Pillole di Meccanica - il Differenziale",
       "published_at": "2025-05-04T18:00:06Z",
@@ -2158,6 +2158,17 @@
       "duration_formatted": "15m",
       "thumbnail_url": "/thumbnail-default.png",
       "watch_url": "https://www.youtube.com/watch?v=XKIy8wt8pjs"
+    },
+    {
+      "id": "7DaCoxUf_bQ",
+      "title": "Lezione del 29/04/2025 Pomeriggio",
+      "published_at": "2025-04-29T15:10:04Z",
+      "year": 2025,
+      "month": 4,
+      "duration_seconds": 2343,
+      "duration_formatted": "39m",
+      "thumbnail_url": "/thumbnail-default.png",
+      "watch_url": "https://www.youtube.com/watch?v=7DaCoxUf_bQ"
     },
     {
       "id": "hfh0MfBubmc",
@@ -2633,17 +2644,6 @@
       "watch_url": "https://www.youtube.com/watch?v=qLh2FIKP30o"
     },
     {
-      "id": "4b-3S_ndSs4",
-      "title": "Pillole di Teoria - i Rimorchi",
-      "published_at": "2025-03-14T13:00:06Z",
-      "year": 2025,
-      "month": 3,
-      "duration_seconds": 533,
-      "duration_formatted": "8m",
-      "thumbnail_url": "/thumbnail-default.png",
-      "watch_url": "https://www.youtube.com/watch?v=4b-3S_ndSs4"
-    },
-    {
       "id": "_nKHpiDBPak",
       "title": "Pillole di Meccanica - Il Servofreno a Depressione",
       "published_at": "2025-03-12T17:00:06Z",
@@ -2686,6 +2686,17 @@
       "duration_formatted": "6m",
       "thumbnail_url": "/thumbnail-default.png",
       "watch_url": "https://www.youtube.com/watch?v=Ho3k2r12mh8"
+    },
+    {
+      "id": "bj999kf1lUc",
+      "title": "Lezione del 07/03/2025",
+      "published_at": "2025-03-07T19:33:48Z",
+      "year": 2025,
+      "month": 3,
+      "duration_seconds": 3522,
+      "duration_formatted": "58m",
+      "thumbnail_url": "/thumbnail-default.png",
+      "watch_url": "https://www.youtube.com/watch?v=bj999kf1lUc"
     },
     {
       "id": "vhuPsg0Q9DA",
