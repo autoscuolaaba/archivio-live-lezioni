@@ -177,10 +177,14 @@ export default function LoginPage() {
         </div>
 
         {/* Footer info */}
-        <div className="mt-6 space-y-3">
-          <p className="text-center text-sm text-netflix-text-secondary font-inter font-medium">
-            🔒 Accesso riservato agli allievi effettivamente iscritti ad Autoscuola ABA
-          </p>
+        <div className="mt-6 space-y-4">
+          {/* Avviso accesso riservato - in evidenza */}
+          <div className="bg-aba-red/10 border-2 border-aba-red/30 rounded-xl px-6 py-4">
+            <p className="text-center text-base md:text-lg text-white font-poppins font-semibold leading-relaxed">
+              🔒 Accesso riservato agli allievi effettivamente iscritti ad Autoscuola ABA
+            </p>
+          </div>
+
           <div className="text-center text-xs text-netflix-text-muted font-inter">
             <p>&copy; {new Date().getFullYear()} Autoscuola ABA - Tutti i diritti riservati</p>
             <p className="mt-1">Bassano del Grappa &bull; Cartigliano</p>
