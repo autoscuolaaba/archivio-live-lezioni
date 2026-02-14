@@ -175,9 +175,6 @@ export default function Home() {
         <YearNavBar years={years.map(y => y.year)} />
       </div>
 
-      {/* Live streaming banner */}
-      <LiveBanner />
-
       {userName && (
         <div className="bg-netflix-dark/60 border-b border-netflix-border py-5 md:py-6">
           <div className="container mx-auto px-4 max-w-7xl text-center">
@@ -187,6 +184,9 @@ export default function Home() {
           </div>
         </div>
       )}
+
+      {/* Live streaming banner */}
+      <LiveBanner />
 
       <StatsBar
         totalVideos={totalVideos}
