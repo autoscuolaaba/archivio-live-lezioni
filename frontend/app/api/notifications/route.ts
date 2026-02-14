@@ -21,6 +21,9 @@ interface VideoCacheData {
 
 const MAX_NOTIFICATIONS = 10
 
+// Force dynamic rendering (uses cookies)
+export const dynamic = 'force-dynamic'
+
 export async function GET() {
   try {
     const cookieStore = cookies()

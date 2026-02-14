@@ -3,6 +3,9 @@ import { cookies } from 'next/headers'
 import { COOKIE_NAME, getSessionUser, computePwv } from '@/lib/auth'
 import { supabaseAdmin } from '@/lib/supabase'
 
+// Force dynamic rendering (uses cookies)
+export const dynamic = 'force-dynamic'
+
 export async function GET() {
   const cookieStore = cookies()
   const token = cookieStore.get(COOKIE_NAME)?.value

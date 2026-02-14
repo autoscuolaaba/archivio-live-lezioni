@@ -3,6 +3,9 @@ import { cookies } from 'next/headers'
 import { COOKIE_NAME, getSessionUser } from '@/lib/auth'
 import { supabaseAdmin } from '@/lib/supabase'
 
+// Force dynamic rendering (uses cookies)
+export const dynamic = 'force-dynamic'
+
 // POST - Mark current time as last visit
 export async function POST() {
   try {

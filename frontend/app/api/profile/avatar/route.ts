@@ -6,6 +6,9 @@ import { supabaseAdmin } from '@/lib/supabase'
 const BUCKET_NAME = 'avatars'
 const MAX_FILE_SIZE = 5 * 1024 * 1024 // 5MB
 
+// Force dynamic rendering (uses cookies)
+export const dynamic = 'force-dynamic'
+
 // GET - Retrieve user avatar URL
 export async function GET() {
   try {
