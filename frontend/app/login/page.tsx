@@ -179,7 +179,7 @@ export default function LoginPage() {
         {/* Footer info */}
         <div className="mt-6 space-y-3">
           <p className="text-center text-sm text-netflix-text-secondary font-inter font-medium">
-            🔒 Accesso riservato agli allievi di Autoscuola ABA
+            🔒 Accesso riservato agli allievi effettivamente iscritti ad Autoscuola ABA
           </p>
           <div className="text-center text-xs text-netflix-text-muted font-inter">
             <p>&copy; {new Date().getFullYear()} Autoscuola ABA - Tutti i diritti riservati</p>
