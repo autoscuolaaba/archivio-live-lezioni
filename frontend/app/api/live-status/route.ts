@@ -23,7 +23,26 @@ interface YouTubeSearchResponse {
   }>
 }
 
+interface LiveStatusCache {
+  data: {
+    isLive: boolean
+    videoId?: string
+    title?: string
+    thumbnail?: string
+  }
+  timestamp: number
+}
+
+// Server-side cache (in-memory)
+let cache: LiveStatusCache | null = null
+const CACHE_TTL = 60 * 1000 // 60 seconds
+
 export async function GET() {
+  // Check if cache is valid
+  if (cache && Date.now() - cache.timestamp < CACHE_TTL) {
+    console.log('[LIVE STATUS] Returning cached result')
+    return NextResponse.json(cache.data)
+  }
   try {
     if (!YOUTUBE_API_KEY) {
       console.error('[LIVE STATUS] YouTube API key not configured')
@@ -50,21 +69,38 @@ export async function GET() {
 
     const data: YouTubeSearchResponse = await response.json()
 
+    let result
+
     if (data.items && data.items.length > 0) {
       const liveVideo = data.items[0]
       console.log(`[LIVE STATUS] Live broadcast detected: ${liveVideo.snippet.title}`)
 
-      return NextResponse.json({
+      result = {
         isLive: true,
         videoId: liveVideo.id.videoId,
         title: liveVideo.snippet.title,
         thumbnail: liveVideo.snippet.thumbnails.high.url,
-      })
+      }
+    } else {
+      result = { isLive: false }
     }
 
-    return NextResponse.json({ isLive: false })
+    // Update cache
+    cache = {
+      data: result,
+      timestamp: Date.now(),
+    }
+
+    return NextResponse.json(result)
   } catch (error) {
     console.error('[LIVE STATUS] Error:', error)
+
+    // On error, return cached data if available, otherwise return false
+    if (cache) {
+      console.log('[LIVE STATUS] Error, returning stale cache')
+      return NextResponse.json(cache.data)
+    }
+
     return NextResponse.json({ isLive: false })
   }
 }
