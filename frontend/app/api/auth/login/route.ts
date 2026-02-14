@@ -58,7 +58,7 @@ export async function POST(request: NextRequest) {
     // 3. Query tabella allievi su Supabase
     const { data: allievo, error: dbError } = await supabaseAdmin
       .from('allievi')
-      .select('id, email, password_hash, nome, attivo, data_teoria_passata')
+      .select('id, email, password_hash, nome, attivo, data_iscrizione, data_teoria_passata')
       .eq('email', email.toLowerCase().trim())
       .single()
 
@@ -81,7 +81,17 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // 4b. Verifica che l'allievo non abbia già passato la teoria
+    // 4b. Verifica che l'allievo abbia una data di iscrizione
+    if (!allievo.data_iscrizione) {
+      console.warn(`[LOGIN] Data iscrizione mancante per: ${email} da IP: ${ip}`)
+      await new Promise(resolve => setTimeout(resolve, 1000))
+      return NextResponse.json(
+        { error: 'Iscrizione non completata. Contatta l\'autoscuola.' },
+        { status: 401, headers: { 'X-Content-Type-Options': 'nosniff' } }
+      )
+    }
+
+    // 4c. Verifica che l'allievo non abbia già passato la teoria
     if (allievo.data_teoria_passata) {
       console.warn(`[LOGIN] Teoria già passata per: ${email} da IP: ${ip}`)
       await new Promise(resolve => setTimeout(resolve, 1000))
