@@ -1,7 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { createSessionToken, getSessionCookieConfig } from '@/lib/auth'
+import { createSessionToken, getSessionCookieConfig, computePwv } from '@/lib/auth'
 import { checkRateLimit } from '@/lib/rate-limit'
 import { supabaseAdmin } from '@/lib/supabase'
+import { timingSafeEqual } from 'crypto'
 
 function getClientIp(request: NextRequest): string {
   return request.headers.get('x-forwarded-for')?.split(',')[0]?.trim()
@@ -108,7 +109,13 @@ export async function POST(request: NextRequest) {
       const bcrypt = await import('bcryptjs')
       passwordValid = await bcrypt.compare(password, allievo.password_hash)
     } else {
-      passwordValid = password === allievo.password_hash
+      // Fallback per password legacy non ancora hashate — confronto timing-safe
+      const a = Buffer.from(password, 'utf-8')
+      const b = Buffer.from(allievo.password_hash, 'utf-8')
+      passwordValid = a.length === b.length && timingSafeEqual(a, b)
+      if (passwordValid) {
+        console.warn(`[LOGIN] Password in chiaro per: ${email} — eseguire migrazione hash`)
+      }
     }
 
     if (!passwordValid) {
@@ -131,7 +138,7 @@ export async function POST(request: NextRequest) {
       email: allievo.email,
       id: allievo.id,
       nome: allievo.nome,
-      passwordHash: allievo.password_hash,
+      pwv: computePwv(allievo.password_hash),
     })
     const cookieConfig = getSessionCookieConfig(token)
 

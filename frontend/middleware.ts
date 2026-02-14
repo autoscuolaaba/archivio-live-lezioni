@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { jwtVerify } from 'jose'
 import { createClient } from '@supabase/supabase-js'
+import { createHmac } from 'crypto'
 
 const COOKIE_NAME = 'aba-session'
 
@@ -54,7 +55,10 @@ export async function middleware(request: NextRequest) {
     }
 
     // Invalida sessioni senza pwv (token vecchi) o con password cambiata
-    if (!payload.pwv || !allievo.password_hash || payload.pwv !== allievo.password_hash.slice(-8)) {
+    const expectedPwv = allievo.password_hash
+      ? createHmac('sha256', process.env.JWT_SECRET!).update(allievo.password_hash).digest('hex').slice(0, 16)
+      : null
+    if (!payload.pwv || !expectedPwv || payload.pwv !== expectedPwv) {
       const response = redirectToLogin(request)
       response.cookies.delete(COOKIE_NAME)
       return response

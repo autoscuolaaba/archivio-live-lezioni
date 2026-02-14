@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 import { cookies } from 'next/headers'
-import { COOKIE_NAME, getSessionUser } from '@/lib/auth'
+import { COOKIE_NAME, getSessionUser, computePwv } from '@/lib/auth'
 import { supabaseAdmin } from '@/lib/supabase'
 
 export async function GET() {
@@ -29,7 +29,8 @@ export async function GET() {
   }
 
   // Invalida sessioni senza pwv (token vecchi) o con password cambiata
-  if (!user.pwv || !allievo.password_hash || user.pwv !== allievo.password_hash.slice(-8)) {
+  const expectedPwv = allievo.password_hash ? computePwv(allievo.password_hash) : null
+  if (!user.pwv || !expectedPwv || user.pwv !== expectedPwv) {
     return NextResponse.json({ nome: null }, { status: 401 })
   }
 

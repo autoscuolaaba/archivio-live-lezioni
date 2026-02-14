@@ -1,4 +1,5 @@
 import { SignJWT, jwtVerify } from 'jose'
+import { createHmac } from 'crypto'
 
 export const COOKIE_NAME = 'aba-session'
 
@@ -15,7 +16,17 @@ function getSessionDurationDays(): number {
   return days ? parseInt(days, 10) : 14
 }
 
-export async function createSessionToken(user: { email: string; id: string; nome: string; passwordHash?: string }): Promise<string> {
+/**
+ * Calcola un verificatore opaco (HMAC) dal password_hash.
+ * Cambia quando la password cambia, ma non espone nessuna parte dell'hash.
+ */
+export function computePwv(passwordHash: string): string {
+  const secret = process.env.JWT_SECRET
+  if (!secret) throw new Error('JWT_SECRET environment variable is not set')
+  return createHmac('sha256', secret).update(passwordHash).digest('hex').slice(0, 16)
+}
+
+export async function createSessionToken(user: { email: string; id: string; nome: string; pwv?: string }): Promise<string> {
   const secret = getJwtSecret()
   const durationDays = getSessionDurationDays()
 
@@ -24,7 +35,7 @@ export async function createSessionToken(user: { email: string; id: string; nome
     email: user.email,
     userId: user.id,
     nome: user.nome,
-    pwv: user.passwordHash ? user.passwordHash.slice(-8) : undefined,
+    pwv: user.pwv,
   })
     .setProtectedHeader({ alg: 'HS256' })
     .setIssuedAt()
