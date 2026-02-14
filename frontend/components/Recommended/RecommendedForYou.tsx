@@ -46,19 +46,16 @@ export default function RecommendedForYou({ allVideos, watchedIds, isWatched, on
               {/* Card */}
               <div className="relative bg-netflix-card rounded-lg overflow-hidden shadow-card hover:shadow-card-hover transition-all duration-300 hover:scale-105 hover:z-10">
                 {/* Rank badge - Netflix style */}
-                <div className="absolute -left-3 bottom-0 z-20 h-full flex items-end pb-2">
+                <div className="absolute -left-2 md:-left-3 bottom-0 z-20 h-full flex items-end pb-2">
                   <div className="relative">
-                    {/* Multiple shadow layers for depth */}
-                    <div className="absolute inset-0 text-[140px] md:text-[180px] font-poppins font-black text-black opacity-100 leading-none translate-x-[3px] translate-y-[3px]">
+                    {/* Shadow layer */}
+                    <div className="absolute inset-0 text-[120px] md:text-[160px] font-poppins font-black text-black opacity-100 leading-none translate-x-[2px] translate-y-[2px]">
                       {index + 1}
                     </div>
-                    <div className="absolute inset-0 text-[140px] md:text-[180px] font-poppins font-black text-black opacity-70 leading-none translate-x-[2px] translate-y-[2px]">
-                      {index + 1}
-                    </div>
-                    {/* Main number with thick white stroke */}
-                    <div className="relative text-[140px] md:text-[180px] font-poppins font-black leading-none" style={{
-                      color: '#E5E5E5',
-                      WebkitTextStroke: '6px #1A1A1A',
+                    {/* Main white number with black stroke */}
+                    <div className="relative text-[120px] md:text-[160px] font-poppins font-black leading-none" style={{
+                      color: '#FFFFFF',
+                      WebkitTextStroke: '4px #000000',
                       paintOrder: 'stroke fill'
                     }}>
                       {index + 1}

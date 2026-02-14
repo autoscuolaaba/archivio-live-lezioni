@@ -15,6 +15,10 @@ const nextConfig = {
         protocol: 'https',
         hostname: 'img.youtube.com',
       },
+      {
+        protocol: 'https',
+        hostname: 'qoddxlyrltzhkwfuxbdg.supabase.co',
+      },
     ],
     // Se usi static export, decomment questa riga
     // unoptimized: true,

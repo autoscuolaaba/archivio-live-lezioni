@@ -84,6 +84,11 @@ export default function Home() {
         if (data) {
           if (data.nome) setUserName(data.nome)
           fetchData()
+          // Aggiorna last_visit per le notifiche
+          fetch('/api/notifications/mark-visited', { method: 'POST' })
+            .catch(() => {
+              // Silent fail
+            })
         }
       })
       .catch(() => {
@@ -165,7 +170,7 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-netflix-black">
       <div className="sticky top-0 z-50 bg-netflix-dark">
-        <Header />
+        <Header allVideos={allVideos} />
         <YearNavBar years={years.map(y => y.year)} />
       </div>
 
