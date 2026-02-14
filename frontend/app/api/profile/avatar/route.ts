@@ -113,7 +113,11 @@ export async function POST(request: NextRequest) {
     if (uploadError) {
       console.error('[AVATAR UPLOAD] Storage error:', uploadError)
       return NextResponse.json(
-        { error: 'Errore durante l\'upload dell\'immagine' },
+        {
+          error: 'Errore durante l\'upload dell\'immagine',
+          details: uploadError.message,
+          code: uploadError.name
+        },
         { status: 500 }
       )
     }

@@ -90,7 +90,10 @@ export default function ProfileEditModal({
       const data = await response.json()
 
       if (!response.ok) {
-        throw new Error(data.error || 'Errore durante l\'upload')
+        const errorMsg = data.details
+          ? `${data.error}: ${data.details}`
+          : data.error || 'Errore durante l\'upload'
+        throw new Error(errorMsg)
       }
 
       onAvatarUpdate(data.avatarUrl)
