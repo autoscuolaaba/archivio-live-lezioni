@@ -179,8 +179,8 @@ export default function LoginPage() {
         {/* Footer info */}
         <div className="mt-6 space-y-4">
           {/* Avviso accesso riservato - in evidenza */}
-          <div className="bg-aba-red/10 border-2 border-aba-red/30 rounded-xl px-6 py-4">
-            <p className="text-center text-base md:text-lg text-white font-poppins font-semibold leading-relaxed">
+          <div className="bg-aba-red/10 border-2 border-aba-red/30 rounded-lg px-4 py-3">
+            <p className="text-center text-sm text-white font-poppins font-semibold">
               🔒 Accesso riservato agli allievi effettivamente iscritti ad Autoscuola ABA
             </p>
           </div>
