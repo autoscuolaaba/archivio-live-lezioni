@@ -9,6 +9,7 @@ import YearSection from '@/components/Sections/YearSection'
 import ScrollToTop from '@/components/UI/ScrollToTop'
 import NewVideosNotification from '@/components/UI/NewVideosNotification'
 import RecommendedForYou from '@/components/Recommended/RecommendedForYou'
+import LiveBanner from '@/components/Live/LiveBanner'
 import { useWatchedVideos } from '@/hooks/useWatchedVideos'
 import { Video, MonthData, YearData, ApiResponse } from '@/types/video'
 
@@ -173,6 +174,9 @@ export default function Home() {
         <Header allVideos={allVideos} />
         <YearNavBar years={years.map(y => y.year)} />
       </div>
+
+      {/* Live streaming banner */}
+      <LiveBanner />
 
       {userName && (
         <div className="bg-netflix-dark/60 border-b border-netflix-border py-5 md:py-6">
