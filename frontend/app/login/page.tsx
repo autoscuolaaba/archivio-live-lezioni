@@ -50,8 +50,7 @@ export default function LoginPage() {
       const data = await response.json()
 
       if (response.ok) {
-        router.push('/')
-        router.refresh()
+        window.location.href = '/'
       } else {
         setError(data.error || 'Credenziali non valide')
         setPassword('')
