@@ -1,5 +1,5 @@
 {
-  "last_updated": "2026-02-14T04:11:54.298690Z",
+  "last_updated": "2026-02-15T10:23:03.674403Z",
   "total_videos": 1568,
   "total_hours": 1352,
   "videos": [
@@ -9,8 +9,8 @@
       "published_at": "2026-02-13T19:32:35Z",
       "year": 2026,
       "month": 2,
-      "duration_seconds": 3539,
-      "duration_formatted": "58m",
+      "duration_seconds": 3541,
+      "duration_formatted": "59m",
       "thumbnail_url": "/thumbnail-default.png",
       "watch_url": "https://www.youtube.com/watch?v=D1sJWrxdEug"
     },
