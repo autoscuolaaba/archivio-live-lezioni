@@ -71,13 +71,13 @@ export default function LiveBanner() {
         className="bg-red-600 hover:bg-red-700 cursor-pointer px-6 py-4 flex items-center justify-center gap-3 transition-all shadow-lg"
       >
         <div className="flex flex-col sm:flex-row items-center gap-2 sm:gap-3">
-          <span className="text-white font-poppins font-bold text-base sm:text-lg relative inline-block">
-            <span className="relative">
-              🔴
-              {/* Pallino pulsante sopra l'emoji */}
-              <span className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-2 h-2 bg-white rounded-full animate-ping"></span>
+          <span className="text-white font-poppins font-bold text-base sm:text-lg inline-flex items-center gap-2">
+            {/* Pallino rosso con pulsante bianco sovrapposto */}
+            <span className="relative inline-flex h-4 w-4 shrink-0">
+              <span className="absolute inset-0 rounded-full bg-white/60 animate-ping"></span>
+              <span className="relative inline-flex h-4 w-4 rounded-full bg-white"></span>
             </span>
-            {' '}DIRETTA IN CORSO
+            DIRETTA IN CORSO
           </span>
           <span className="text-white/90 font-inter text-sm sm:text-base">
             Clicca per guardare
