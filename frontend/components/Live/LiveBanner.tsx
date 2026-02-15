@@ -38,6 +38,25 @@ export default function LiveBanner() {
     return () => clearInterval(interval)
   }, [])
 
+  // Mark live video as watched when user opens player
+  const handleOpenPlayer = async () => {
+    setShowPlayer(true)
+
+    // Mark as watched in background
+    if (liveStatus.videoId) {
+      try {
+        await fetch('/api/videos/watch', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ videoId: liveStatus.videoId }),
+        })
+        console.log('[LIVE BANNER] Marked live video as watched:', liveStatus.videoId)
+      } catch (error) {
+        console.error('[LIVE BANNER] Error marking as watched:', error)
+      }
+    }
+  }
+
   // Don't render anything while checking for the first time
   if (isChecking) return null
 
@@ -48,13 +67,17 @@ export default function LiveBanner() {
     <>
       {/* Live Banner */}
       <div
-        onClick={() => setShowPlayer(true)}
+        onClick={handleOpenPlayer}
         className="bg-red-600 hover:bg-red-700 cursor-pointer px-6 py-4 flex items-center justify-center gap-3 transition-all shadow-lg"
       >
-        <div className="w-3 h-3 bg-white rounded-full animate-ping" />
         <div className="flex flex-col sm:flex-row items-center gap-2 sm:gap-3">
-          <span className="text-white font-poppins font-bold text-base sm:text-lg">
-            🔴 DIRETTA IN CORSO
+          <span className="text-white font-poppins font-bold text-base sm:text-lg relative inline-block">
+            <span className="relative">
+              🔴
+              {/* Pallino pulsante sopra l'emoji */}
+              <span className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-2 h-2 bg-white rounded-full animate-ping"></span>
+            </span>
+            {' '}DIRETTA IN CORSO
           </span>
           <span className="text-white/90 font-inter text-sm sm:text-base">
             Clicca per guardare
